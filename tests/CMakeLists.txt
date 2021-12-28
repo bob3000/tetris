@@ -1,0 +1,10 @@
+file(GLOB_RECURSE PROJECT_SOURCES RELATIVE "${CMAKE_CURRENT_LIST_DIR}" "*.test.c")
+set(PROJECT_INCLUDE "${CMAKE_CURRENT_LIST_DIR}/../src/")
+
+foreach(source ${PROJECT_SOURCES})
+  string(REGEX REPLACE ".test.c$" "" TEST_NAME ${source})
+  add_executable(${TEST_NAME} ${source})
+  target_link_libraries(${TEST_NAME} PRIVATE libtetris)
+  target_include_directories(${TEST_NAME} PRIVATE ${PROJECT_INCLUDE})
+  add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+endforeach()
