@@ -3,6 +3,11 @@
 #include <inttypes.h>
 
 // libtetris
+#define SCREEN_WIDTH (500)
+#define SCREEN_HEIGHT (800)
+
+#define WINDOW_TITLE "Tetris"
+
 int run(void);
 
 // brick
@@ -20,6 +25,16 @@ int run(void);
 #define TRANSITION_NONE                                                        \
   (Vector2) { .x = 0.0f, .y = 0.0f }
 
+typedef enum _Collision {
+  CollisionBrickLeft,
+  CollisionBrickRight,
+  CollisionBrickTop,
+  CollisionNone,
+  CollisionWallBottom,
+  CollisionWallLeft,
+  CollisionWallRight,
+} Collision;
+
 typedef struct _Brick {
   Vector2 position;
   Color color;
@@ -29,6 +44,7 @@ Brick *BrickNew(float posX, float posY, Color color);
 void BrickDestroy(Brick *brick);
 bool BrickMove(Brick *brick, Vector2 transition);
 void BrickRender(Brick *brick);
+Collision BrickCollisionCheck(Brick *brick, Vector2 transition);
 
 // formation
 typedef enum _Shape {
@@ -54,3 +70,4 @@ void FormationDestroy(Formation *formation);
 void FormationMove(Formation *formation);
 void FormationRotateLeft(Formation *formation);
 void FormationRender(Formation *formation);
+Collision FormationCollisionCheck(Formation *formation, Vector2 transition);

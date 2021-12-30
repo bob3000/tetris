@@ -15,17 +15,18 @@ void BrickRender(Brick *brick) {
                 brick->color);
 }
 
-// bool BrickCollisionCheck(Brick *brick, Brick *other) {
-//   Rectangle brickShape = {.x = brick->poition.x,
-//                           .y = brick->poition.y,
-//                           .width = BRICK_WIDTH,
-//                           .height = BRICK_HEIGHT};
-//   Rectangle otherShape = {.x = other->poition.x,
-//                           .y = other->poition.y,
-//                           .width = BRICK_WIDTH,
-//                           .height = BRICK_HEIGHT};
-//   return CheckCollisionRecs(brickShape, otherShape);
-// }
+Collision BrickCollisionCheck(Brick *brick, Vector2 transition) {
+  Vector2 posNew = Vector2Add(brick->position, transition);
+  if (posNew.x < 0.0f) {
+    return CollisionWallLeft;
+  } else if ((posNew.x + BRICK_WIDTH) > (float)SCREEN_WIDTH) {
+    return CollisionWallRight;
+  } else if ((posNew.y + BRICK_HEIGHT) > (float)SCREEN_HEIGHT) {
+    return CollisionWallBottom;
+  } else {
+    return CollisionNone;
+  }
+}
 
 bool BrickMove(Brick *brick, Vector2 transition) {
   brick->position = Vector2Add(brick->position, transition);

@@ -150,18 +150,30 @@ Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
   }
   return formation;
 }
+
 void FormationDestroy(Formation *formation) {
   MemFree(formation->bricks);
   MemFree(formation);
 }
+
 void FormationMove(Formation *formation) {
   Vector2 transition = TRANSITION_NONE;
+  Collision collision = CollisionNone;
   if (IsKeyReleased(KEY_LEFT)) {
-    transition = TRANSITION_LEFT;
+    collision = FormationCollisionCheck(formation, TRANSITION_LEFT);
+    if (collision == CollisionNone) {
+      transition = TRANSITION_LEFT;
+    }
   } else if (IsKeyReleased(KEY_RIGHT)) {
-    transition = TRANSITION_RIGHT;
+    collision = FormationCollisionCheck(formation, TRANSITION_RIGHT);
+    if (collision == CollisionNone) {
+      transition = TRANSITION_RIGHT;
+    }
   } else if (IsKeyDown(KEY_DOWN)) {
-    transition = TRANSITION_DOWN;
+    collision = FormationCollisionCheck(formation, TRANSITION_DOWN);
+    if (collision == CollisionNone) {
+      transition = TRANSITION_DOWN;
+    }
   } else if (IsKeyReleased(KEY_UP)) {
     FormationRotateLeft(formation);
   }
@@ -174,6 +186,22 @@ void FormationMove(Formation *formation) {
 void FormationRotateLeft(Formation *formation) {
   formation->currentRotation =
       ++(formation->currentRotation) % formation->numRotations;
+  if (FormationCollisionCheck(formation, TRANSITION_NONE) != CollisionNone) {
+    formation->currentRotation =
+        --(formation->currentRotation) % formation->numRotations;
+  }
+}
+
+Collision FormationCollisionCheck(Formation *formation, Vector2 transition) {
+  Collision collision = CollisionNone;
+  for (uint32_t i = formation->currentRotation * formation->numBricks;
+       i < (formation->numBricks * (formation->currentRotation + 1)); i++) {
+    collision = BrickCollisionCheck(&formation->bricks[i], transition);
+    if (collision != CollisionNone) {
+      return collision;
+    }
+  }
+  return collision;
 }
 
 void FormationRender(Formation *formation) {
