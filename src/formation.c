@@ -1,11 +1,15 @@
 #include "libtetris.h"
 
-Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
+Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
+                        Color color) {
   Formation *formation = (Formation *)MemAlloc(sizeof(Formation));
   formation->shape = shape;
+  formation->grid = grid;
   formation->numBricks = 4;
   formation->currentRotation = 0;
   switch (shape) {
+  // XX
+  // XX
   case Block:
     formation->numRotations = 1;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks);
@@ -15,6 +19,10 @@ Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
     formation->bricks[3] =
         *BrickNew(posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
+  // X
+  // X
+  // X
+  // X
   case Line:
     formation->numRotations = 2;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
@@ -30,6 +38,9 @@ Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
     formation->bricks[6] = *BrickNew(posX + BRICK_WIDTH, posY, color);
     formation->bricks[7] = *BrickNew(posX + BRICK_WIDTH * 2, posY, color);
     break;
+  // X
+  // X
+  // XX
   case El:
     formation->numRotations = 4;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
@@ -59,6 +70,9 @@ Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
     formation->bricks[15] =
         *BrickNew(posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
+  //  X
+  //  X
+  // XX
   case Le:
     formation->numRotations = 4;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
@@ -88,6 +102,8 @@ Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
     formation->bricks[15] =
         *BrickNew(posX - BRICK_WIDTH, posY - BRICK_HEIGHT, color);
     break;
+  // XX
+  //  XX
   case Zee:
     formation->numRotations = 2;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
@@ -105,6 +121,8 @@ Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
     formation->bricks[7] =
         *BrickNew(posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
+  //  XX
+  // XX
   case Eez:
     formation->numRotations = 2;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
@@ -122,6 +140,9 @@ Formation *FormationNew(Shape shape, float posX, float posY, Color color) {
     formation->bricks[7] =
         *BrickNew(posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
+  // X
+  // XX
+  // X
   case Tee:
     formation->numRotations = 4;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
@@ -156,7 +177,7 @@ void FormationDestroy(Formation *formation) {
   MemFree(formation);
 }
 
-void FormationMove(Formation *formation) {
+bool FormationMove(Formation *formation) {
   Vector2 transition = TRANSITION_NONE;
   Collision collision = CollisionNone;
   if (IsKeyReleased(KEY_LEFT)) {
@@ -177,10 +198,18 @@ void FormationMove(Formation *formation) {
   } else if (IsKeyReleased(KEY_UP)) {
     FormationRotateLeft(formation);
   }
+  switch (collision) {
+  case CollisionWallBottom:
+  case CollisionBrickTop:
+    return false;
+  default:
+    break;
+  }
   for (uint32_t i = 0; i < (formation->numBricks * formation->numRotations);
        i++) {
     BrickMove(&formation->bricks[i], transition);
   }
+  return true;
 };
 
 void FormationRotateLeft(Formation *formation) {
@@ -202,6 +231,13 @@ Collision FormationCollisionCheck(Formation *formation, Vector2 transition) {
     }
   }
   return collision;
+}
+
+void FormationPersist(Formation *formation) {
+  for (uint32_t i = formation->currentRotation * formation->numBricks;
+       i < (formation->numBricks * (formation->currentRotation + 1)); i++) {
+    GridPut(formation->grid, &formation->bricks[i]);
+  }
 }
 
 void FormationRender(Formation *formation) {

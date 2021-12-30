@@ -28,7 +28,6 @@ Collision BrickCollisionCheck(Brick *brick, Vector2 transition) {
   }
 }
 
-bool BrickMove(Brick *brick, Vector2 transition) {
+void BrickMove(Brick *brick, Vector2 transition) {
   brick->position = Vector2Add(brick->position, transition);
-  return true;
 }

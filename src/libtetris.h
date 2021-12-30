@@ -1,10 +1,12 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <inttypes.h>
+#include <stdlib.h>
+#include <string.h>
 
 // libtetris
-#define SCREEN_WIDTH (500)
-#define SCREEN_HEIGHT (800)
+#define SCREEN_WIDTH ((uint32_t)500)
+#define SCREEN_HEIGHT ((uint32_t)800)
 
 #define WINDOW_TITLE "Tetris"
 
@@ -40,13 +42,13 @@ typedef struct _Brick {
   Color color;
 } Brick;
 
-Brick *BrickNew(float posX, float posY, Color color);
-void BrickDestroy(Brick *brick);
-bool BrickMove(Brick *brick, Vector2 transition);
-void BrickRender(Brick *brick);
-Collision BrickCollisionCheck(Brick *brick, Vector2 transition);
+typedef struct _Grid {
+  uint32_t numRows;
+  uint32_t numCols;
+  Brick *bricks[SCREEN_HEIGHT / (uint32_t)BRICK_HEIGHT]
+               [SCREEN_WIDTH / (uint32_t)BRICK_WIDTH];
+} Grid;
 
-// formation
 typedef enum _Shape {
   Block,
   Line,
@@ -62,12 +64,30 @@ typedef struct _Formation {
   uint8_t numRotations;
   uint8_t currentRotation;
   Shape shape;
+  Grid *grid;
   Brick *bricks;
 } Formation;
 
-Formation *FormationNew(Shape shape, float posX, float posY, Color color);
+Brick *BrickNew(float posX, float posY, Color color);
+void BrickDestroy(Brick *brick);
+void BrickMove(Brick *brick, Vector2 transition);
+void BrickRender(Brick *brick);
+Collision BrickCollisionCheck(Brick *brick, Vector2 transition);
+
+// formation
+Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
+                        Color color);
 void FormationDestroy(Formation *formation);
-void FormationMove(Formation *formation);
+bool FormationMove(Formation *formation);
 void FormationRotateLeft(Formation *formation);
+void FormationPersist(Formation *formation);
 void FormationRender(Formation *formation);
 Collision FormationCollisionCheck(Formation *formation, Vector2 transition);
+
+// Grid
+Grid *GridNew();
+void GridDestroy(Grid *grid);
+void GridRender(Grid *grid);
+Brick *GridGet(Grid *grid, Vector2 position);
+void GridPut(Grid *grid, Brick *brick);
+void GridDel(Grid *grid, Brick *brick);
