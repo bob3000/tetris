@@ -79,7 +79,7 @@ Collision BrickCollisionCheck(Brick *brick, Vector2 transition);
 Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
                         Color color);
 void FormationDestroy(Formation *formation);
-bool FormationMove(Formation *formation);
+bool FormationMove(Formation *formation, Vector2 transition);
 void FormationRotateLeft(Formation *formation);
 void FormationPersist(Formation *formation);
 void FormationRender(Formation *formation);
@@ -92,3 +92,6 @@ void GridRender(Grid *grid);
 Brick *GridGet(Grid *grid, Vector2 position);
 void GridPut(Grid *grid, Brick *brick);
 void GridDel(Grid *grid, Brick *brick);
+
+// Player input
+bool PlayerInputApply(Formation *formation);

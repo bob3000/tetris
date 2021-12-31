@@ -8,7 +8,7 @@ int run(void) {
 
   while (!WindowShouldClose()) {
     // Update
-    if (!FormationMove(activeForamtion)) {
+    if (!PlayerInputApply(activeForamtion)) {
       FormationPersist(activeForamtion);
       FormationDestroy(activeForamtion);
       activeForamtion = FormationNew(grid, Tee, 150.0f, 150.0f, BLACK);

@@ -178,27 +178,8 @@ void FormationDestroy(Formation *formation) {
   MemFree(formation);
 }
 
-bool FormationMove(Formation *formation) {
-  Vector2 transition = TRANSITION_NONE;
-  Collision collision = CollisionNone;
-  if (IsKeyReleased(KEY_LEFT)) {
-    collision = FormationCollisionCheck(formation, TRANSITION_LEFT);
-    if (collision == CollisionNone) {
-      transition = TRANSITION_LEFT;
-    }
-  } else if (IsKeyReleased(KEY_RIGHT)) {
-    collision = FormationCollisionCheck(formation, TRANSITION_RIGHT);
-    if (collision == CollisionNone) {
-      transition = TRANSITION_RIGHT;
-    }
-  } else if (IsKeyDown(KEY_DOWN)) {
-    collision = FormationCollisionCheck(formation, TRANSITION_DOWN);
-    if (collision == CollisionNone) {
-      transition = TRANSITION_DOWN;
-    }
-  } else if (IsKeyReleased(KEY_UP)) {
-    FormationRotateLeft(formation);
-  }
+bool FormationMove(Formation *formation, Vector2 transition) {
+  Collision collision = FormationCollisionCheck(formation, transition);
   if ((transition.x + transition.y) > 0.0f)
     TraceLog(LOG_INFO, "transition x: %f y: %f", transition.x, transition.y);
   if (collision != 3)
@@ -209,14 +190,14 @@ bool FormationMove(Formation *formation) {
   case CollisionBrickTop:
     TraceLog(LOG_INFO, "collision brick top");
     return false;
+  case CollisionNone:
+    for (uint32_t i = 0; i < (formation->numBricks * formation->numRotations);
+         i++) {
+      BrickMove(&formation->bricks[i], transition);
+    }
   default:
-    break;
+    return true;
   }
-  for (uint32_t i = 0; i < (formation->numBricks * formation->numRotations);
-       i++) {
-    BrickMove(&formation->bricks[i], transition);
-  }
-  return true;
 };
 
 void FormationRotateLeft(Formation *formation) {

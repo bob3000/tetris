@@ -24,11 +24,11 @@ Collision BrickCollisionCheck(Brick *brick, Vector2 transition) {
     return CollisionWallRight;
   } else if ((posNew.y + BRICK_HEIGHT) > (float)SCREEN_HEIGHT) {
     return CollisionWallBottom;
-  } else if (posNew.y > 0.0f && GridGet(brick->grid, posNew) != NULL) {
+  } else if (transition.y > 0.0f && GridGet(brick->grid, posNew) != NULL) {
     return CollisionBrickTop;
-  } else if (posNew.x > 0.0f && GridGet(brick->grid, posNew) != NULL) {
+  } else if (transition.x > 0.0f && GridGet(brick->grid, posNew) != NULL) {
     return CollisionBrickRight;
-  } else if (posNew.x < 0.0f && GridGet(brick->grid, posNew) != NULL) {
+  } else if (transition.x < 0.0f && GridGet(brick->grid, posNew) != NULL) {
     return CollisionBrickLeft;
   } else {
     return CollisionNone;
