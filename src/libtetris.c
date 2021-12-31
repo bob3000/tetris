@@ -1,17 +1,25 @@
 #include <libtetris.h>
 
+int PosXRandom() {
+  return (rand() % (SCREEN_WIDTH - ((uint32_t)BRICK_WIDTH * 4)) /
+          (uint32_t)BRICK_WIDTH) *
+         (uint32_t)BRICK_WIDTH;
+}
+
 int run(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
   SetTargetFPS(60);
   Grid *grid = GridNew();
-  Formation *activeForamtion = FormationNew(grid, Tee, 150.0f, 150.0f, BLACK);
+  Formation *activeForamtion =
+      FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
 
   while (!WindowShouldClose()) {
     // Update
     if (!PlayerInputApply(activeForamtion)) {
       FormationPersist(activeForamtion);
       FormationDestroy(activeForamtion);
-      activeForamtion = FormationNew(grid, Tee, 150.0f, 150.0f, BLACK);
+      activeForamtion =
+          FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
     }
 
     // Draw

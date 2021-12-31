@@ -22,6 +22,10 @@ void GridRender(Grid *grid) {
 Brick *GridGet(Grid *grid, Vector2 position) {
   uint32_t row = (uint32_t)(position.y / BRICK_WIDTH);
   uint32_t col = (uint32_t)(position.x / BRICK_HEIGHT);
+  if (position.x > SCREEN_WIDTH || position.x < 0.0f || position.y < 0.0f ||
+      position.y > SCREEN_HEIGHT) {
+    return NULL;
+  }
   return grid->bricks[row][col];
 }
 

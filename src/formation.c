@@ -178,6 +178,17 @@ void FormationDestroy(Formation *formation) {
   MemFree(formation);
 }
 
+Formation *FormationRandom(Grid *grid, float posX, float posY) {
+  Shape shapes[] = {Block, Line, Zee, El, Le, Eez, Tee};
+  Color colores[] = {BLACK, BLUE, RED, YELLOW, GREEN, BROWN, MAGENTA};
+  uint8_t numShapes = sizeof(shapes) / sizeof(int);
+  uint8_t numColores = sizeof(colores) / sizeof(int);
+  uint8_t choiceShape = rand() % numShapes;
+  uint8_t choiceColor = rand() % numShapes;
+  return FormationNew(grid, shapes[choiceShape], posX, posY,
+                      colores[choiceColor]);
+}
+
 bool FormationMove(Formation *formation, Vector2 transition) {
   Collision collision = FormationCollisionCheck(formation, transition);
   if ((transition.x + transition.y) > 0.0f)

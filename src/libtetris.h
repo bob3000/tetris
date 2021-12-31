@@ -78,6 +78,7 @@ Collision BrickCollisionCheck(Brick *brick, Vector2 transition);
 // formation
 Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
                         Color color);
+Formation *FormationRandom(Grid *grid, float posX, float posY);
 void FormationDestroy(Formation *formation);
 bool FormationMove(Formation *formation, Vector2 transition);
 void FormationRotateLeft(Formation *formation);
