@@ -37,17 +37,18 @@ typedef enum _Collision {
   CollisionWallRight,
 } Collision;
 
-typedef struct _Brick {
-  Vector2 position;
-  Color color;
-} Brick;
-
 typedef struct _Grid {
   uint32_t numRows;
   uint32_t numCols;
-  Brick *bricks[SCREEN_HEIGHT / (uint32_t)BRICK_HEIGHT]
-               [SCREEN_WIDTH / (uint32_t)BRICK_WIDTH];
+  struct _Brick *bricks[SCREEN_HEIGHT / (uint32_t)BRICK_HEIGHT]
+                       [SCREEN_WIDTH / (uint32_t)BRICK_WIDTH];
 } Grid;
+
+typedef struct _Brick {
+  Vector2 position;
+  Grid *grid;
+  Color color;
+} Brick;
 
 typedef enum _Shape {
   Block,
@@ -68,7 +69,7 @@ typedef struct _Formation {
   Brick *bricks;
 } Formation;
 
-Brick *BrickNew(float posX, float posY, Color color);
+Brick *BrickNew(Grid *grid, float posX, float posY, Color color);
 void BrickDestroy(Brick *brick);
 void BrickMove(Brick *brick, Vector2 transition);
 void BrickRender(Brick *brick);

@@ -13,11 +13,11 @@ Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
   case Block:
     formation->numRotations = 1;
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks);
-    formation->bricks[0] = *BrickNew(posX, posY, color);
-    formation->bricks[1] = *BrickNew(posX + BRICK_WIDTH, posY, color);
-    formation->bricks[2] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[0] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[1] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
+    formation->bricks[2] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
     formation->bricks[3] =
-        *BrickNew(posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
   // X
   // X
@@ -28,15 +28,16 @@ Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
                                           formation->numRotations);
     // vertical
-    formation->bricks[0] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
-    formation->bricks[1] = *BrickNew(posX, posY, color);
-    formation->bricks[2] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
-    formation->bricks[3] = *BrickNew(posX, posY + BRICK_HEIGHT * 2, color);
+    formation->bricks[0] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[1] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[2] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[3] =
+        *BrickNew(grid, posX, posY + BRICK_HEIGHT * 2, color);
     // horizontal
-    formation->bricks[4] = *BrickNew(posX - BRICK_WIDTH, posY, color);
-    formation->bricks[5] = *BrickNew(posX, posY, color);
-    formation->bricks[6] = *BrickNew(posX + BRICK_WIDTH, posY, color);
-    formation->bricks[7] = *BrickNew(posX + BRICK_WIDTH * 2, posY, color);
+    formation->bricks[4] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
+    formation->bricks[5] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[6] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
+    formation->bricks[7] = *BrickNew(grid, posX + BRICK_WIDTH * 2, posY, color);
     break;
   // X
   // X
@@ -46,29 +47,29 @@ Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
                                           formation->numRotations);
     // 0
-    formation->bricks[0] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
-    formation->bricks[1] = *BrickNew(posX, posY, color);
-    formation->bricks[2] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[0] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[1] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[2] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
     formation->bricks[3] =
-        *BrickNew(posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     // 90
-    formation->bricks[4] = *BrickNew(posX - BRICK_WIDTH, posY, color);
-    formation->bricks[5] = *BrickNew(posX, posY, color);
-    formation->bricks[6] = *BrickNew(posX + BRICK_WIDTH, posY, color);
+    formation->bricks[4] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
+    formation->bricks[5] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[6] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
     formation->bricks[7] =
-        *BrickNew(posX + BRICK_WIDTH, posY - BRICK_HEIGHT, color);
+        *BrickNew(grid, posX + BRICK_WIDTH, posY - BRICK_HEIGHT, color);
     // 180
-    formation->bricks[8] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
-    formation->bricks[9] = *BrickNew(posX, posY, color);
-    formation->bricks[10] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[8] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[9] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[10] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
     formation->bricks[11] =
-        *BrickNew(posX - BRICK_WIDTH, posY - BRICK_HEIGHT, color);
+        *BrickNew(grid, posX - BRICK_WIDTH, posY - BRICK_HEIGHT, color);
     // 270
-    formation->bricks[12] = *BrickNew(posX + BRICK_WIDTH, posY, color);
-    formation->bricks[13] = *BrickNew(posX, posY, color);
-    formation->bricks[14] = *BrickNew(posX - BRICK_WIDTH, posY, color);
+    formation->bricks[12] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
+    formation->bricks[13] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[14] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
     formation->bricks[15] =
-        *BrickNew(posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
   //  X
   //  X
@@ -78,29 +79,29 @@ Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
                                           formation->numRotations);
     // 0
-    formation->bricks[0] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
-    formation->bricks[1] = *BrickNew(posX, posY, color);
-    formation->bricks[2] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[0] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[1] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[2] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
     formation->bricks[3] =
-        *BrickNew(posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     // 90
-    formation->bricks[4] = *BrickNew(posX - BRICK_WIDTH, posY, color);
-    formation->bricks[5] = *BrickNew(posX, posY, color);
-    formation->bricks[6] = *BrickNew(posX + BRICK_WIDTH, posY, color);
+    formation->bricks[4] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
+    formation->bricks[5] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[6] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
     formation->bricks[7] =
-        *BrickNew(posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     // 180
-    formation->bricks[8] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
-    formation->bricks[9] = *BrickNew(posX, posY, color);
-    formation->bricks[10] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[8] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[9] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[10] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
     formation->bricks[11] =
-        *BrickNew(posX + BRICK_WIDTH, posY - BRICK_HEIGHT, color);
+        *BrickNew(grid, posX + BRICK_WIDTH, posY - BRICK_HEIGHT, color);
     // 270
-    formation->bricks[12] = *BrickNew(posX + BRICK_WIDTH, posY, color);
-    formation->bricks[13] = *BrickNew(posX, posY, color);
-    formation->bricks[14] = *BrickNew(posX - BRICK_WIDTH, posY, color);
+    formation->bricks[12] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
+    formation->bricks[13] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[14] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
     formation->bricks[15] =
-        *BrickNew(posX - BRICK_WIDTH, posY - BRICK_HEIGHT, color);
+        *BrickNew(grid, posX - BRICK_WIDTH, posY - BRICK_HEIGHT, color);
     break;
   // XX
   //  XX
@@ -109,17 +110,17 @@ Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
                                           formation->numRotations);
     // horizontal
-    formation->bricks[0] = *BrickNew(posX - BRICK_WIDTH, posY, color);
-    formation->bricks[1] = *BrickNew(posX, posY, color);
-    formation->bricks[2] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[0] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
+    formation->bricks[1] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[2] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
     formation->bricks[3] =
-        *BrickNew(posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     // vertical
-    formation->bricks[4] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
-    formation->bricks[5] = *BrickNew(posX, posY, color);
-    formation->bricks[6] = *BrickNew(posX - BRICK_WIDTH, posY, color);
+    formation->bricks[4] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[5] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[6] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
     formation->bricks[7] =
-        *BrickNew(posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
   //  XX
   // XX
@@ -128,17 +129,17 @@ Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
                                           formation->numRotations);
     // horizontal
-    formation->bricks[0] = *BrickNew(posX + BRICK_WIDTH, posY, color);
-    formation->bricks[1] = *BrickNew(posX, posY, color);
-    formation->bricks[2] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[0] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
+    formation->bricks[1] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[2] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
     formation->bricks[3] =
-        *BrickNew(posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX - BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     // vertical
-    formation->bricks[4] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
-    formation->bricks[5] = *BrickNew(posX, posY, color);
-    formation->bricks[6] = *BrickNew(posX + BRICK_WIDTH, posY, color);
+    formation->bricks[4] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[5] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[6] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
     formation->bricks[7] =
-        *BrickNew(posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
+        *BrickNew(grid, posX + BRICK_WIDTH, posY + BRICK_HEIGHT, color);
     break;
   // X
   // XX
@@ -148,25 +149,25 @@ Formation *FormationNew(Grid *grid, Shape shape, float posX, float posY,
     formation->bricks = (Brick *)MemAlloc(sizeof(Brick) * formation->numBricks *
                                           formation->numRotations);
     // 0
-    formation->bricks[0] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
-    formation->bricks[1] = *BrickNew(posX, posY, color);
-    formation->bricks[2] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
-    formation->bricks[3] = *BrickNew(posX + BRICK_WIDTH, posY, color);
+    formation->bricks[0] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[1] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[2] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[3] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
     // 90
-    formation->bricks[4] = *BrickNew(posX - BRICK_WIDTH, posY, color);
-    formation->bricks[5] = *BrickNew(posX, posY, color);
-    formation->bricks[6] = *BrickNew(posX + BRICK_WIDTH, posY, color);
-    formation->bricks[7] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[4] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
+    formation->bricks[5] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[6] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
+    formation->bricks[7] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
     // 180
-    formation->bricks[8] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
-    formation->bricks[9] = *BrickNew(posX, posY, color);
-    formation->bricks[10] = *BrickNew(posX, posY - BRICK_HEIGHT, color);
-    formation->bricks[11] = *BrickNew(posX - BRICK_WIDTH, posY, color);
+    formation->bricks[8] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[9] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[10] = *BrickNew(grid, posX, posY - BRICK_HEIGHT, color);
+    formation->bricks[11] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
     // 270
-    formation->bricks[12] = *BrickNew(posX + BRICK_WIDTH, posY, color);
-    formation->bricks[13] = *BrickNew(posX, posY, color);
-    formation->bricks[14] = *BrickNew(posX - BRICK_WIDTH, posY, color);
-    formation->bricks[15] = *BrickNew(posX, posY + BRICK_HEIGHT, color);
+    formation->bricks[12] = *BrickNew(grid, posX + BRICK_WIDTH, posY, color);
+    formation->bricks[13] = *BrickNew(grid, posX, posY, color);
+    formation->bricks[14] = *BrickNew(grid, posX - BRICK_WIDTH, posY, color);
+    formation->bricks[15] = *BrickNew(grid, posX, posY + BRICK_HEIGHT, color);
     break;
   }
   return formation;
@@ -198,9 +199,15 @@ bool FormationMove(Formation *formation) {
   } else if (IsKeyReleased(KEY_UP)) {
     FormationRotateLeft(formation);
   }
+  if ((transition.x + transition.y) > 0.0f)
+    TraceLog(LOG_INFO, "transition x: %f y: %f", transition.x, transition.y);
+  if (collision != 3)
+    TraceLog(LOG_INFO, "collision %d", collision);
   switch (collision) {
   case CollisionWallBottom:
+    TraceLog(LOG_INFO, "collision bottom");
   case CollisionBrickTop:
+    TraceLog(LOG_INFO, "collision brick top");
     return false;
   default:
     break;

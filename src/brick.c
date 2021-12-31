@@ -1,7 +1,8 @@
 #include <libtetris.h>
 
-Brick *BrickNew(float posX, float posY, Color color) {
+Brick *BrickNew(Grid *grid, float posX, float posY, Color color) {
   Brick *brick = (Brick *)MemAlloc(sizeof(Brick));
+  brick->grid = grid;
   brick->position.x = posX;
   brick->position.y = posY;
   brick->color = color;
@@ -23,6 +24,12 @@ Collision BrickCollisionCheck(Brick *brick, Vector2 transition) {
     return CollisionWallRight;
   } else if ((posNew.y + BRICK_HEIGHT) > (float)SCREEN_HEIGHT) {
     return CollisionWallBottom;
+  } else if (posNew.y > 0.0f && GridGet(brick->grid, posNew) != NULL) {
+    return CollisionBrickTop;
+  } else if (posNew.x > 0.0f && GridGet(brick->grid, posNew) != NULL) {
+    return CollisionBrickRight;
+  } else if (posNew.x < 0.0f && GridGet(brick->grid, posNew) != NULL) {
+    return CollisionBrickLeft;
   } else {
     return CollisionNone;
   }
