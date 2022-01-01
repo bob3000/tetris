@@ -15,6 +15,7 @@ int run(void);
 // brick
 #define BRICK_HEIGHT 50.0f
 #define BRICK_WIDTH 50.0f
+#define FALLING_DELAY (uint32_t)100;
 
 #define TRANSITION_LEFT                                                        \
   (Vector2) { .x = -BRICK_WIDTH, .y = 0.0f }

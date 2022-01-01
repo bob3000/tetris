@@ -12,6 +12,7 @@ int run(void) {
   Grid *grid = GridNew();
   Formation *activeForamtion =
       FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
+  uint32_t fallCounter = FALLING_DELAY;
 
   while (!WindowShouldClose()) {
     // Update
@@ -21,6 +22,17 @@ int run(void) {
       activeForamtion =
           FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
     }
+    fallCounter -= 1;
+    if (!fallCounter && !FormationMove(activeForamtion, TRANSITION_DOWN)) {
+      FormationPersist(activeForamtion);
+      FormationDestroy(activeForamtion);
+      activeForamtion =
+          FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
+    }
+    if (fallCounter <= 0) {
+      fallCounter = FALLING_DELAY;
+    }
+    TraceLog(LOG_INFO, "fall counter: %d", fallCounter);
 
     // Draw
     BeginDrawing();
