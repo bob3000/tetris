@@ -232,11 +232,14 @@ Collision FormationCollisionCheck(Formation *formation, Vector2 transition) {
   return collision;
 }
 
-void FormationPersist(Formation *formation) {
+bool FormationPersist(Formation *formation) {
   for (uint32_t i = formation->currentRotation * formation->numBricks;
        i < (formation->numBricks * (formation->currentRotation + 1)); i++) {
-    GridPut(formation->grid, &formation->bricks[i]);
+    if (!GridPut(formation->grid, &formation->bricks[i])) {
+      return false;
+    }
   }
+  return true;
 }
 
 void FormationRender(Formation *formation) {

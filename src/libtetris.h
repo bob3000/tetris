@@ -28,6 +28,35 @@ int run(void);
 #define TRANSITION_NONE                                                        \
   (Vector2) { .x = 0.0f, .y = 0.0f }
 
+typedef enum _Align {
+  LEFT,
+  CENTER,
+  RIGHT,
+} Align;
+
+typedef struct _TextLine {
+  int fontSize;
+  int textLen;
+  Color color;
+  int posY;
+  Align align;
+  char *body;
+} TextLine;
+
+typedef enum _GameState {
+  GameInitializing,
+  GameRunning,
+  GamePaused,
+  GameOver,
+  GameTerminate,
+} GameState;
+
+typedef struct _Game {
+  GameState state;
+  uint32_t score;
+  uint8_t level;
+} Game;
+
 typedef enum _Collision {
   CollisionBrickLeft,
   CollisionBrickRight,
@@ -70,6 +99,21 @@ typedef struct _Formation {
   Brick *bricks;
 } Formation;
 
+// Text
+TextLine *TextLineNew(const char *body, int posY, Align align, int fontSize,
+                      Color color);
+void TextLineRender(TextLine *textLine);
+void TextLineDestroy(TextLine *textLine);
+void TextDisplayPause();
+void TextDisplayOver();
+
+// Game
+Game *GameNew();
+void GameDestroy(Game *game);
+void GameTogglePaused(Game *game);
+void GameSetState(Game *game, GameState state);
+void GameReset(Game *game);
+
 Brick *BrickNew(Grid *grid, float posX, float posY, Color color);
 void BrickDestroy(Brick *brick);
 void BrickMove(Brick *brick, Vector2 transition);
@@ -83,7 +127,7 @@ Formation *FormationRandom(Grid *grid, float posX, float posY);
 void FormationDestroy(Formation *formation);
 bool FormationMove(Formation *formation, Vector2 transition);
 void FormationRotateLeft(Formation *formation);
-void FormationPersist(Formation *formation);
+bool FormationPersist(Formation *formation);
 void FormationRender(Formation *formation);
 Collision FormationCollisionCheck(Formation *formation, Vector2 transition);
 
@@ -97,4 +141,5 @@ bool GridDel(Grid *grid, Brick *brick);
 int32_t GridCollect(Grid *grid);
 
 // Player input
-bool PlayerInputApply(Formation *formation);
+bool PlayerInputFormation(Formation *formation);
+void PlayerInputGame(Game *game);

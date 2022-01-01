@@ -1,6 +1,6 @@
 #include "libtetris.h"
 
-bool PlayerInputApply(Formation *formation) {
+bool PlayerInputFormation(Formation *formation) {
   if (IsKeyReleased(KEY_LEFT)) {
     return FormationMove(formation, TRANSITION_LEFT);
   } else if (IsKeyReleased(KEY_RIGHT)) {
@@ -11,4 +11,14 @@ bool PlayerInputApply(Formation *formation) {
     FormationRotateLeft(formation);
   }
   return true;
+}
+
+void PlayerInputGame(Game *game) {
+  if (IsKeyReleased(KEY_P)) {
+    GameTogglePaused(game);
+  } else if (IsKeyReleased(KEY_R)) {
+    GameSetState(game, GameInitializing);
+  } else if (IsKeyReleased(KEY_Q)) {
+    GameSetState(game, GameTerminate);
+  }
 }

@@ -9,25 +9,69 @@ int PosXRandom() {
 int run(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
   SetTargetFPS(60);
-  Grid *grid = GridNew();
-  Formation *activeForamtion =
-      FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
+  Game *game = GameNew();
+  Grid *grid = NULL;
+  Formation *activeForamtion = NULL;
   uint32_t fallCounter = FALLING_DELAY;
 
   while (!WindowShouldClose()) {
     // Update
-    if (!PlayerInputApply(activeForamtion)) {
-      FormationPersist(activeForamtion);
-      FormationDestroy(activeForamtion);
+    PlayerInputGame(game);
+    if (game->state == GameTerminate) {
+      break;
+    }
+
+    if (game->state == GameInitializing) {
+      GameReset(game);
+      if (activeForamtion != NULL) {
+        FormationDestroy(activeForamtion);
+        activeForamtion = NULL;
+      }
+      if (grid != NULL) {
+        GridDestroy(grid);
+        grid = NULL;
+      }
+      grid = GridNew();
+      GameSetState(game, GameRunning);
+    }
+
+    if (game->state == GameOver) {
+      BeginDrawing();
+      ClearBackground(BLACK);
+      TextDisplayOver();
+      EndDrawing();
+      continue;
+    }
+
+    if (game->state == GamePaused) {
+      BeginDrawing();
+      ClearBackground(BLACK);
+      TextDisplayPause();
+      EndDrawing();
+      continue;
+    }
+
+    // GameState GameRunning
+    if (activeForamtion == NULL) {
       activeForamtion =
           FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
     }
+    if (!PlayerInputFormation(activeForamtion)) {
+      if (!FormationPersist(activeForamtion)) {
+        GameSetState(game, GameOver);
+      }
+      FormationDestroy(activeForamtion);
+      activeForamtion = NULL;
+      continue;
+    }
     fallCounter -= 1;
     if (!fallCounter && !FormationMove(activeForamtion, TRANSITION_DOWN)) {
-      FormationPersist(activeForamtion);
+      if (!FormationPersist(activeForamtion)) {
+        GameSetState(game, GameOver);
+      }
       FormationDestroy(activeForamtion);
-      activeForamtion =
-          FormationRandom(grid, PosXRandom(), 0.0f - BRICK_HEIGHT * 4);
+      activeForamtion = NULL;
+      continue;
     }
     if (fallCounter <= 0) {
       fallCounter = FALLING_DELAY;
@@ -45,6 +89,7 @@ int run(void) {
   }
 
   GridDestroy(grid);
+  GameDestroy(game);
   CloseWindow();
 
   return 0;
