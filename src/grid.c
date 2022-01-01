@@ -29,16 +29,26 @@ Brick *GridGet(Grid *grid, Vector2 position) {
   return grid->bricks[row][col];
 }
 
-void GridPut(Grid *grid, Brick *brick) {
+bool GridPut(Grid *grid, Brick *brick) {
+  if (brick->position.x > SCREEN_WIDTH || brick->position.x < 0.0f ||
+      brick->position.y < 0.0f || brick->position.y > SCREEN_HEIGHT) {
+    return false;
+  }
   uint32_t row = (uint32_t)(brick->position.y / BRICK_WIDTH);
   uint32_t col = (uint32_t)(brick->position.x / BRICK_HEIGHT);
   grid->bricks[row][col] = (Brick *)MemAlloc(sizeof(Brick));
   memcpy(grid->bricks[row][col], brick, sizeof(Brick));
+  return true;
 }
 
-void GridDel(Grid *grid, Brick *brick) {
+bool GridDel(Grid *grid, Brick *brick) {
+  if (brick->position.x > SCREEN_WIDTH || brick->position.x < 0.0f ||
+      brick->position.y < 0.0f || brick->position.y > SCREEN_HEIGHT) {
+    return false;
+  }
   uint32_t row = (uint32_t)(brick->position.y / BRICK_WIDTH);
   uint32_t col = (uint32_t)(brick->position.x / BRICK_HEIGHT);
   MemFree(grid->bricks[row][col]);
   grid->bricks[row][col] = NULL;
+  return true;
 }
