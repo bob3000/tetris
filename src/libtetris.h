@@ -94,6 +94,7 @@ void GridRender(Grid *grid);
 Brick *GridGet(Grid *grid, Vector2 position);
 bool GridPut(Grid *grid, Brick *brick);
 bool GridDel(Grid *grid, Brick *brick);
+int32_t GridCollect(Grid *grid);
 
 // Player input
 bool PlayerInputApply(Formation *formation);

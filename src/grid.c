@@ -52,3 +52,40 @@ bool GridDel(Grid *grid, Brick *brick) {
   grid->bricks[row][col] = NULL;
   return true;
 }
+
+int32_t GridCollect(Grid *grid) {
+  int8_t linesToCollect = 0;
+  // get num lines to collect
+  for (int32_t i = grid->numRows - 1; i >= 0; i--) {
+    for (int32_t j = grid->numCols - 1; j >= 0; j--) {
+      if (grid->bricks[i][j] == NULL) {
+        i = j = -1;
+      }
+    }
+    if (i >= 0) {
+      linesToCollect += 1;
+    }
+  }
+  if (linesToCollect == 0) {
+    return linesToCollect;
+  }
+
+  // move lines downward
+  Brick *tmpBrick = NULL;
+  for (int32_t i = grid->numRows - 1; i >= 0; i--) {
+    for (int32_t j = grid->numCols - 1; j >= 0; j--) {
+      if ((i + linesToCollect) >= grid->numRows) {
+        MemFree(grid->bricks[i][j]);
+        grid->bricks[i][j] = NULL;
+      } else if (grid->bricks[i][j] != NULL) {
+        tmpBrick = grid->bricks[i][j];
+        tmpBrick->position.y += BRICK_HEIGHT * (float)linesToCollect;
+        GridPut(grid, tmpBrick);
+        MemFree(tmpBrick);
+        tmpBrick = NULL;
+        grid->bricks[i][j] = NULL;
+      }
+    }
+  }
+  return linesToCollect;
+}

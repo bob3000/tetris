@@ -32,7 +32,7 @@ int run(void) {
     if (fallCounter <= 0) {
       fallCounter = FALLING_DELAY;
     }
-    TraceLog(LOG_INFO, "fall counter: %d", fallCounter);
+    GridCollect(grid);
 
     // Draw
     BeginDrawing();
