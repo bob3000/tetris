@@ -180,7 +180,7 @@ void FormationDestroy(Formation *formation) {
 
 Formation *FormationRandom(Grid *grid, float posX, float posY) {
   Shape shapes[] = {Block, Line, Zee, El, Le, Eez, Tee};
-  Color colores[] = {BLACK, BLUE, RED, YELLOW, GREEN, BROWN, MAGENTA};
+  Color colores[] = {LIGHTGRAY, BLUE, RED, YELLOW, GREEN, BROWN, MAGENTA};
   uint8_t numShapes = sizeof(shapes) / sizeof(int);
   uint8_t numColores = sizeof(colores) / sizeof(int);
   uint8_t choiceShape = rand() % numShapes;

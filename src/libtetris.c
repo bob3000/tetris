@@ -37,7 +37,7 @@ int run(void) {
     // Draw
     BeginDrawing();
 
-    ClearBackground(RAYWHITE);
+    ClearBackground(BLACK);
     FormationRender(activeForamtion);
     GridRender(grid);
 
