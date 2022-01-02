@@ -35,14 +35,16 @@ void TextLineRender(TextLine *textLine) {
 void TextLineDestroy(TextLine *textLine) { MemFree(textLine); }
 
 void TextDisplayPause() {
-  TextLine *textGamePaused = TextLineNew("GAME PAUSED", 40, CENTER, 40, GREEN);
+  TextLine *textTitle = TextLineNew("TETRIS", 140, CENTER, 80, GREEN);
+  TextLine *textGamePaused = TextLineNew("GAME PAUSED", 340, CENTER, 40, GREEN);
   TextLine *textGameResume =
-      TextLineNew("Press P to resume game", 120, CENTER, 20, GREEN);
+      TextLineNew("Press P to resume game", 420, CENTER, 20, GREEN);
   TextLine *textGameReset =
-      TextLineNew("Press R to reset game", 140, CENTER, 20, GREEN);
+      TextLineNew("Press R to reset game", 440, CENTER, 20, GREEN);
   TextLine *textGameQuit =
-      TextLineNew("Press Q to quit game", 160, CENTER, 20, GREEN);
+      TextLineNew("Press Q to quit game", 460, CENTER, 20, GREEN);
 
+  TextLineRender(textTitle);
   TextLineRender(textGamePaused);
   TextLineRender(textGameResume);
   TextLineRender(textGameReset);
@@ -50,14 +52,14 @@ void TextDisplayPause() {
 }
 
 void TextDisplayOver() {
-  TextLine *textGameOver = TextLineNew("GAME OVER", 40, CENTER, 40, GREEN);
-  TextLine *textGameResume =
-      TextLineNew("Press P to resume game", 120, CENTER, 20, GREEN);
+  TextLine *textTitle = TextLineNew("TETRIS", 140, CENTER, 80, GREEN);
+  TextLine *textGameOver = TextLineNew("GAME OVER", 340, CENTER, 40, GREEN);
   TextLine *textGameReset =
-      TextLineNew("Press R to reset game", 140, CENTER, 20, GREEN);
+      TextLineNew("Press R to start game", 420, CENTER, 20, GREEN);
   TextLine *textGameQuit =
-      TextLineNew("Press Q to quit game", 160, CENTER, 20, GREEN);
+      TextLineNew("Press Q to quit game", 440, CENTER, 20, GREEN);
 
+  TextLineRender(textTitle);
   TextLineRender(textGameOver);
   TextLineRender(textGameReset);
   TextLineRender(textGameQuit);
