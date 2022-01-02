@@ -116,9 +116,9 @@ const char *gridHolesExpected = "- - - - - - - - - -\n"
                                 "- - - - - - - - - -\n"
                                 "- - - - - - - - - -\n"
                                 "- - - - - - - - - -\n"
+                                "- - - - - - - - - -\n"
                                 "- - - - - x - - - -\n"
                                 "- - - - - x - - - -\n"
-                                "x x x x x x x x x x\n"
                                 "x x x x x x x - x x\n"
                                 "x x x - x x x x x x\n";
 
@@ -199,9 +199,10 @@ void TestGridCollectBottomLine() {
   TraceLog(LOG_INFO, "Test collect bottom line grid");
   Grid *gridInput = GridBuild(gridBottomLine);
   Grid *gridExpected = GridBuild(gridEmpty);
-  GridCollect(gridInput);
+  uint32_t linesCollected = GridCollect(gridInput);
   GridPrint(gridInput);
   assert(GridCompare(gridInput, gridExpected));
+  assert(linesCollected == 1);
   GridDestroy(gridInput);
   GridDestroy(gridExpected);
 }
@@ -210,9 +211,10 @@ void TestGridCollectEmpty() {
   TraceLog(LOG_INFO, "Test collect empty grid");
   Grid *gridInput = GridBuild(gridEmpty);
   Grid *gridExpected = GridBuild(gridEmpty);
-  GridCollect(gridInput);
+  uint32_t linesCollected = GridCollect(gridInput);
   GridPrint(gridInput);
   assert(GridCompare(gridInput, gridExpected));
+  assert(linesCollected == 0);
   GridDestroy(gridInput);
   GridDestroy(gridExpected);
 }
@@ -221,9 +223,10 @@ void TestGridCollectFull() {
   TraceLog(LOG_INFO, "Test collect full grid");
   Grid *gridInput = GridBuild(gridFull);
   Grid *gridExpected = GridBuild(gridEmpty);
-  GridCollect(gridInput);
+  uint32_t linesCollected = GridCollect(gridInput);
   GridPrint(gridInput);
   assert(GridCompare(gridInput, gridExpected));
+  assert(linesCollected == 16);
   GridDestroy(gridInput);
   GridDestroy(gridExpected);
 }
@@ -232,9 +235,10 @@ void TestGridCollectPyramid() {
   TraceLog(LOG_INFO, "Test collect pyramid grid");
   Grid *gridInput = GridBuild(gridPyramid);
   Grid *gridExpected = GridBuild(gridPyramidExpected);
-  GridCollect(gridInput);
+  uint32_t linesCollected = GridCollect(gridInput);
   GridPrint(gridInput);
   assert(GridCompare(gridInput, gridExpected));
+  assert(linesCollected == 2);
   GridDestroy(gridInput);
   GridDestroy(gridExpected);
 }
@@ -243,9 +247,10 @@ void TestGridCollectHoles() {
   TraceLog(LOG_INFO, "Test collect holes grid");
   Grid *gridInput = GridBuild(gridHoles);
   Grid *gridExpected = GridBuild(gridHolesExpected);
-  GridCollect(gridInput);
+  uint32_t linesCollected = GridCollect(gridInput);
   GridPrint(gridInput);
   assert(GridCompare(gridInput, gridExpected));
+  assert(linesCollected == 2);
   GridDestroy(gridInput);
   GridDestroy(gridExpected);
 }

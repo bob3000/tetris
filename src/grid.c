@@ -54,38 +54,41 @@ bool GridDel(Grid *grid, Brick *brick) {
 }
 
 int32_t GridCollect(Grid *grid) {
-  int8_t linesToCollect = 0;
-  // get num lines to collect
-  for (int32_t i = grid->numRows - 1; i >= 0; i--) {
-    for (int32_t j = grid->numCols - 1; j >= 0; j--) {
+  uint8_t linesCollected = 0;
+  bool deleteLine[grid->numRows];
+  for (uint32_t i = 0; i < grid->numRows; i++) {
+    deleteLine[i] = true;
+    for (uint32_t j = 0; j < grid->numCols; j++) {
       if (grid->bricks[i][j] == NULL) {
-        i = j = -1;
+        deleteLine[i] = false;
+        break;
       }
     }
-    if (i >= 0) {
-      linesToCollect += 1;
-    }
-  }
-  if (linesToCollect == 0) {
-    return linesToCollect;
   }
 
-  // move lines downward
-  Brick *tmpBrick = NULL;
-  for (int32_t i = grid->numRows - 1; i >= 0; i--) {
-    for (int32_t j = grid->numCols - 1; j >= 0; j--) {
-      if ((i + linesToCollect) >= grid->numRows) {
+  for (uint32_t i = 0; i < grid->numRows; i++) {
+    if (deleteLine[i]) {
+      for (uint32_t j = 0; j < grid->numCols; j++) {
         MemFree(grid->bricks[i][j]);
         grid->bricks[i][j] = NULL;
-      } else if (grid->bricks[i][j] != NULL) {
-        tmpBrick = grid->bricks[i][j];
-        tmpBrick->position.y += BRICK_HEIGHT * (float)linesToCollect;
-        GridPut(grid, tmpBrick);
-        MemFree(tmpBrick);
-        tmpBrick = NULL;
-        grid->bricks[i][j] = NULL;
+      }
+      linesCollected += 1;
+    }
+  }
+
+  for (uint32_t line = 0; line < grid->numRows; line++) {
+    if (deleteLine[line]) {
+      for (uint32_t i = line; i > 0; i--) {
+        for (uint32_t j = 0; j < grid->numCols; j++) {
+          if (grid->bricks[i - 1][j] != NULL) {
+            grid->bricks[i][j] = grid->bricks[i - 1][j];
+            grid->bricks[i - 1][j] = NULL;
+            grid->bricks[i][j]->position.y += BRICK_HEIGHT;
+          }
+        }
       }
     }
   }
-  return linesToCollect;
+
+  return linesCollected;
 }
