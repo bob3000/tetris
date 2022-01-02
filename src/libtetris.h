@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // libtetris
 #define SCREEN_WIDTH ((uint32_t)500)
