@@ -7,7 +7,17 @@ Grid *GridNew() {
   return grid;
 }
 
-void GridDestroy(Grid *grid) { MemFree(grid); }
+void GridDestroy(Grid *grid) {
+  for (uint32_t i = 0; i < grid->numRows; i++) {
+    for (uint32_t j = 0; j < grid->numCols; j++) {
+      if (grid->bricks[i][j] != NULL) {
+        MemFree(grid->bricks[i][j]);
+        grid->bricks[i][j] = NULL;
+      }
+    }
+  }
+  MemFree(grid);
+}
 
 void GridRender(Grid *grid) {
   for (uint32_t i = 0; i < grid->numRows; i++) {
