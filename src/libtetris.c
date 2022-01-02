@@ -57,10 +57,11 @@ int run(void) {
     // GameState GameRunning
     if (activeForamtion == NULL) {
       uint32_t posX = PosXRandom();
-      activeForamtion = FormationRandom(grid, posX, 0.0f - BRICK_HEIGHT * 4);
+      activeForamtion = FormationRandom(grid, posX, 0.0f - BRICK_HEIGHT * 2);
+      GameFormationInc(game);
     }
     if (fallCounter <= 0) {
-      fallCounter = FALLING_DELAY;
+      fallCounter = FALLING_DELAY - (FALLING_DELAY / 10 * game->level) + 1;
     }
     fallCounter -= 1;
     if (!PlayerInputFormation(activeForamtion)) {
@@ -69,6 +70,7 @@ int run(void) {
       }
       FormationDestroy(activeForamtion);
       activeForamtion = NULL;
+      GameScoreAdd(game, FormationPut, 1);
       continue;
     }
     if (!fallCounter && !FormationMove(activeForamtion, TRANSITION_DOWN)) {
@@ -76,15 +78,19 @@ int run(void) {
         GameSetState(game, GameOver);
       }
       FormationDestroy(activeForamtion);
+      GameScoreAdd(game, FormationPut, 1);
       activeForamtion = NULL;
       continue;
     }
-    GridCollect(grid);
+    uint32_t numLinesCollected = GridCollect(grid);
+    GameScoreAdd(game, LineCollected, numLinesCollected);
 
     // Draw
     BeginDrawing();
 
     ClearBackground(BLACK);
+    TextDisplayLevel(game->level);
+    TextDisplayScore(game->score);
     FormationRender(activeForamtion);
     GridRender(grid);
 

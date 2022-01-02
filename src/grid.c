@@ -63,7 +63,7 @@ bool GridDel(Grid *grid, Brick *brick) {
   return true;
 }
 
-int32_t GridCollect(Grid *grid) {
+uint32_t GridCollect(Grid *grid) {
   uint8_t linesCollected = 0;
   bool deleteLine[grid->numRows];
   for (uint32_t i = 0; i < grid->numRows; i++) {

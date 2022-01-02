@@ -64,3 +64,17 @@ void TextDisplayOver() {
   TextLineRender(textGameReset);
   TextLineRender(textGameQuit);
 }
+
+void TextDisplayScore(uint32_t score) {
+  char scoreText[32];
+  sprintf(scoreText, "SCORE: %015d", score);
+  TextLine *textScore = TextLineNew(scoreText, 0, RIGHT, 20, GREEN);
+  TextLineRender(textScore);
+}
+
+void TextDisplayLevel(uint32_t level) {
+  char scoreText[16];
+  sprintf(scoreText, "LEVEL: %01d", level);
+  TextLine *textScore = TextLineNew(scoreText, 0, LEFT, 20, GREEN);
+  TextLineRender(textScore);
+}

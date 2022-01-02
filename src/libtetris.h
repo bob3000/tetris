@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include <inttypes.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -16,7 +17,7 @@ int run(void);
 // brick
 #define BRICK_HEIGHT 50.0f
 #define BRICK_WIDTH 50.0f
-#define FALLING_DELAY (uint32_t)100;
+#define FALLING_DELAY (uint32_t)100
 
 #define TRANSITION_LEFT                                                        \
   (Vector2) { .x = -BRICK_WIDTH, .y = 0.0f }
@@ -28,6 +29,11 @@ int run(void);
   (Vector2) { .x = 0.0f, .y = BRICK_HEIGHT }
 #define TRANSITION_NONE                                                        \
   (Vector2) { .x = 0.0f, .y = 0.0f }
+
+// Score
+#define SCORE_FORMATION_PUT (uint32_t)5
+#define SCORE_LINE_COLLECTED (uint32_t)50
+#define FORMATIONS_TO_NEXT_LEVEL (uint8_t)50
 
 typedef enum _Align {
   LEFT,
@@ -56,6 +62,7 @@ typedef struct _Game {
   GameState state;
   uint32_t score;
   uint8_t level;
+  uint32_t numFormations;
 } Game;
 
 typedef enum _Collision {
@@ -100,6 +107,11 @@ typedef struct _Formation {
   Brick *bricks;
 } Formation;
 
+typedef enum _ScoreEvent {
+  FormationPut,
+  LineCollected,
+} ScoreEvent;
+
 // Text
 TextLine *TextLineNew(const char *body, int posY, Align align, int fontSize,
                       Color color);
@@ -107,6 +119,8 @@ void TextLineRender(TextLine *textLine);
 void TextLineDestroy(TextLine *textLine);
 void TextDisplayPause();
 void TextDisplayOver();
+void TextDisplayScore();
+void TextDisplayLevel();
 
 // Game
 Game *GameNew();
@@ -114,6 +128,8 @@ void GameDestroy(Game *game);
 void GameTogglePaused(Game *game);
 void GameSetState(Game *game, GameState state);
 void GameReset(Game *game);
+void GameScoreAdd(Game *game, ScoreEvent event, uint8_t times);
+void GameFormationInc(Game *game);
 
 Brick *BrickNew(Grid *grid, float posX, float posY, Color color);
 void BrickDestroy(Brick *brick);
@@ -139,7 +155,7 @@ void GridRender(Grid *grid);
 Brick *GridGet(Grid *grid, Vector2 position);
 bool GridPut(Grid *grid, Brick *brick);
 bool GridDel(Grid *grid, Brick *brick);
-int32_t GridCollect(Grid *grid);
+uint32_t GridCollect(Grid *grid);
 
 // Player input
 bool PlayerInputFormation(Formation *formation);
