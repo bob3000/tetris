@@ -13,7 +13,9 @@ void BrickDestroy(Brick *brick) { MemFree(brick); }
 
 void BrickRender(Brick *brick) {
   DrawRectangle(brick->position.x, brick->position.y, BRICK_WIDTH, BRICK_HEIGHT,
-                brick->color);
+                BLACK);
+  DrawRectangle(brick->position.x + 1.0f, brick->position.y + 1.0f,
+                BRICK_WIDTH - 2.0f, BRICK_HEIGHT - 2.0f, brick->color);
 }
 
 Collision BrickCollisionCheck(Brick *brick, Vector2 transition) {

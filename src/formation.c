@@ -192,9 +192,8 @@ Formation *FormationRandom(Grid *grid, float posX, float posY) {
 bool FormationMove(Formation *formation, Vector2 transition) {
   Collision collision = FormationCollisionCheck(formation, transition);
   if ((transition.x + transition.y) > 0.0f)
-    TraceLog(LOG_INFO, "transition x: %f y: %f", transition.x, transition.y);
-  if (collision != 3)
-    TraceLog(LOG_INFO, "collision %d", collision);
+    if (collision != 3)
+      TraceLog(LOG_INFO, "collision %d", collision);
   switch (collision) {
   case CollisionWallBottom:
     TraceLog(LOG_INFO, "collision bottom");
