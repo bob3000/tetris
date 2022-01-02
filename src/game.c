@@ -6,6 +6,7 @@ Game *GameNew() {
   game->score = 0;
   game->level = 1;
   game->numFormations = 0;
+  game->fallingCounter = FALLING_DELAY;
   game->playMusic = true;
   return game;
 }
@@ -16,6 +17,7 @@ void GameReset(Game *game) {
   game->state = GameOver;
   game->score = 0;
   game->level = 1;
+  game->fallingCounter = 0;
   game->numFormations = 0;
   game->playMusic = true;
 }
@@ -50,3 +52,11 @@ void GameFormationInc(Game *game) {
     game->level += 1;
   }
 }
+
+void GameResetFallingCounter(Game *game) {
+  uint32_t fallingCounter =
+      FALLING_DELAY - (FALLING_DELAY / 10 * game->level) + 1;
+  game->fallingCounter = fallingCounter;
+}
+
+void GameFallingCounterDec(Game *game) { game->fallingCounter -= 1; }

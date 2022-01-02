@@ -62,6 +62,7 @@ typedef struct _Game {
   GameState state;
   uint32_t score;
   uint8_t level;
+  uint32_t fallingCounter;
   bool playMusic;
   uint32_t numFormations;
 } Game;
@@ -131,6 +132,8 @@ void GameSetState(Game *game, GameState state);
 void GameReset(Game *game);
 void GameScoreAdd(Game *game, ScoreEvent event, uint8_t times);
 void GameFormationInc(Game *game);
+void GameResetFallingCounter(Game *game);
+void GameFallingCounterDec(Game *game);
 
 Brick *BrickNew(Grid *grid, float posX, float posY, Color color);
 void BrickDestroy(Brick *brick);

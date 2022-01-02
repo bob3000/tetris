@@ -16,7 +16,6 @@ int run(void) {
   Game *game = GameNew();
   Grid *grid = NULL;
   Formation *activeForamtion = NULL;
-  uint32_t fallCounter = FALLING_DELAY;
   Sound music = LoadSound("assets/tetris.mp3");
   PlaySound(music);
 
@@ -63,10 +62,10 @@ int run(void) {
       activeForamtion = FormationRandom(grid, posX, 0.0f - BRICK_HEIGHT * 2);
       GameFormationInc(game);
     }
-    if (fallCounter <= 0) {
-      fallCounter = FALLING_DELAY - (FALLING_DELAY / 10 * game->level) + 1;
+    if (game->fallingCounter <= 0) {
+      GameResetFallingCounter(game);
     }
-    fallCounter -= 1;
+    GameFallingCounterDec(game);
     if (!PlayerInputFormation(activeForamtion)) {
       if (!FormationPersist(activeForamtion)) {
         GameSetState(game, GameOver);
@@ -76,7 +75,8 @@ int run(void) {
       GameScoreAdd(game, FormationPut, 1);
       continue;
     }
-    if (!fallCounter && !FormationMove(activeForamtion, TRANSITION_DOWN)) {
+    if (!game->fallingCounter &&
+        !FormationMove(activeForamtion, TRANSITION_DOWN)) {
       if (!FormationPersist(activeForamtion)) {
         GameSetState(game, GameOver);
       }
