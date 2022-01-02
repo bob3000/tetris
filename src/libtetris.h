@@ -62,6 +62,7 @@ typedef struct _Game {
   GameState state;
   uint32_t score;
   uint8_t level;
+  bool playMusic;
   uint32_t numFormations;
 } Game;
 

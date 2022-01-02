@@ -10,12 +10,15 @@ int PosXRandom() {
 
 int run(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
+  InitAudioDevice();
   SetTargetFPS(60);
   srand(time(NULL));
   Game *game = GameNew();
   Grid *grid = NULL;
   Formation *activeForamtion = NULL;
   uint32_t fallCounter = FALLING_DELAY;
+  Sound music = LoadSound("assets/tetris.mp3");
+  PlaySound(music);
 
   while (!WindowShouldClose()) {
     // Update
@@ -99,6 +102,8 @@ int run(void) {
 
   GridDestroy(grid);
   GameDestroy(game);
+  UnloadSound(music);
+  CloseAudioDevice();
   CloseWindow();
 
   return 0;

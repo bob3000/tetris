@@ -6,6 +6,7 @@ Game *GameNew() {
   game->score = 0;
   game->level = 1;
   game->numFormations = 0;
+  game->playMusic = true;
   return game;
 }
 
@@ -16,6 +17,7 @@ void GameReset(Game *game) {
   game->score = 0;
   game->level = 1;
   game->numFormations = 0;
+  game->playMusic = true;
 }
 
 void GameSetState(Game *game, GameState state) { game->state = state; }
