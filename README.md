@@ -1,4 +1,4 @@
-# Tetris
+# Tretis
 
 A Tetris clone written in C using [Raylib](https://www.raylib.com/)
 
