@@ -10,6 +10,11 @@ cmake --build ./build
 build/apps/tetris
 ```
 
+## Screenshots
+
+![menu screen](screens/menu.png "menu screen")
+![game screen](screens/game.png "game screen")
+
 ## Links
 
 https://github.com/SasLuca/raylib-cmake-template  
